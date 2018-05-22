@@ -24,19 +24,12 @@ This repo is part of my spring 2018 course where I worked on developing a demo w
 * Built application using Travis CI and uploaded to S3
 * Deployed application to Auto Scaling group using AWS CodeDeploy
 
-Explain how to run the automated tests for this system
+
 
 ### Information about the application
 
 * Implemented Lambda function for password reset functionality
 * Utilized AWS SNS, AWS SES and AWS Lambda, DynamoDB for achieving the above functionality
-
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 
 ## Deployment
