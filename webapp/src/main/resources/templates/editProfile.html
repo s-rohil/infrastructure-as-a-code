@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Profile</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .btn {
+            background: #424242;
+            border-radius: 0;
+            color: #fff;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #1c1c1c;
+        }
+    </style>
+</head>
+<div th:replace="fragments/header :: header"/>
+<body class="col-sm-10">
+<div th:replace="fragments/userNavigation :: userNavigation"/>
+<div class="container">
+<br/>
+    <h3>Edit your profile here!</h3>
+    <br/>
+    <!--/*@thymesVar id="fileUrl" type="java"*/-->
+    <div th:if="${session.fileUrl}">
+    <img id="local" th:src="@{http://localhost:8080/photo}" alt="Profile pic" width="200" height="200"/>
+        <img id="s3" th:src="${session.fileUrl}" alt="S3 pic" width="200" height="200" />
+    </div>
+    <form class="form-horizontal" id="editform" enctype="multipart/form-data" action="/saveChanges" method="post">
+        <div class="form-group">
+            <div class="col-xs-10">
+                <!--/*@thymesVar id="firstname" type="java"*/-->
+                <!--/*@thymesVar id="lastname" type="java"*/-->
+                <!--/*@thymesVar id="about" type="java"*/-->
+                <label for="firstname">First Name</label>
+                <input th:type="text" class="form-control" id="firstname" name="firstname" required="true" th:value="${session.firstname}"/>
+                <label for="lastname">Last Name</label>
+                <input th:type="text" class="form-control" id="lastname" name="lastname" required="true" th:value="${session.lastname}"/>
+                <label for="about">About</label>
+                <input th:type="text" class="form-control" id="about" name="about" required="true" maxlength="140" th:value="${session.about}"/>
+                <input type="submit" class="btn btn-block" value="Save Changes"/>
+            </div>
+        </div>
+    </form>
+
+    <div class="col-xs-10">
+        <form class="form-horizontal" id="imageupload" method="post" enctype="multipart/form-data" action="/uploadPhoto">
+            <label for="file">Photo to upload:</label>
+            <input type="file" name="file" id="file" class="form-control" required="true"/>
+            <input type="submit" class="btn btn-block" value="Upload Image" />
+        </form>
+    </div>
+
+
+    <div class="col-xs-10">
+        <form class="form-horizontal" id="displayimage" method="post" enctype="multipart/form-data" action="/deletePhoto">
+            <input type="submit" class="btn btn-block btn-danger" value="Delete Image"/>
+        </form>
+    </div>
+
+    <!--/*@thymesVar id="deleteMessage" type="java"*/-->
+
+    <div th:if="${session.deleteMessage}">
+        <h2 th:text="${session.deleteMessage}"/>
+    </div>
+
+    <!--/*@thymesVar id="uploadMessage" type="java"*/-->
+    <div th:if="${session.uploadMessage}">
+        <h2 th:text="${session.uploadMessage}"/>
+    </div>
+
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.querySelectorAll('img').forEach(function(img){
+            img.onerror = function(){this.style.display='none';};
+        })
+    });
+</script>
+</body>
+</html>

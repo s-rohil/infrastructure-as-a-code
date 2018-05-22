@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        /* The message box is shown when the user clicks on the password field */
+        #message {
+            display:none;
+            background: #f1f1f1;
+            color: #000;
+            position: relative;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        #message p {
+            padding: 10px 35px;
+            font-size: 18px;
+        }
+
+        /* Add a green text color and a checkmark when the requirements are right */
+        .valid {
+            color: green;
+        }
+
+        .btn {
+            background: #424242;
+            border-radius: 0;
+            color: #fff;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #1c1c1c;
+        }
+
+        .valid:before {
+            position: relative;
+            left: -35px;
+            content: "✔";
+        }
+
+        /* Add a red text color and an "x" when the requirements are wrong */
+        .invalid {
+            color: red;
+        }
+
+        .invalid:before {
+            position: relative;
+            left: -35px;
+            content: "✖";
+        }
+
+    </style>
+</head>
+<div th:replace="fragments/header :: header"/>
+<body>
+<div th:replace="fragments/navigation :: navigation"/>
+<!-- Page Content -->
+<div class="container">
+    <p>
+        Register here!
+    </p>
+    <br></br>
+    <form class="form-horizontal" id="registerform" enctype="application/json" action="/login" method="post">
+        <div class="form-group">
+            <div class="col-sm-10">
+                <label for="firstname">First Name</label>
+                <input th:type="text" class="form-control" id="firstname" placeholder="John" name="firstname" required="true"></input>
+                <label for="lastname">Last Name</label>
+                <input th:type="text" class="form-control" id="lastname" placeholder="Doe" name="lastname" required="true"></input>
+                <label for="about">About</label>
+                <input th:type="text" class="form-control" id="about" placeholder="I am ...." name="about" required="true" maxlength="140"/>
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="john.doe@example.com" name="email" required="true"></input>
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password" pattern="(?=.*[a-z]).{8,}" title="Must contain at least 8 or more characters" required="true"></input>
+                <input type="submit" class="btn btn-block" value="Register"></input>
+            </div>
+        </div>
+    </form>
+
+    <div id="message" class="col-sm-10">
+        <h3>Password must contain the following:</h3>
+        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+    </div>
+</div>
+<script th:inline="javascript">
+    $("#registerform").submit(function (e) {
+        var object = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            firstname: document.getElementById("firstname").value,
+            lastname: document.getElementById("lastname").value,
+            about: document.getElementById("about").value
+        };
+        var json = JSON.stringify(object);
+        $.ajax({
+            url: '/registerUser',
+            type:'POST',
+            data:json,
+            dataType: 'json',
+            contentType: "application/json",
+            context: document.body,
+        })
+    })
+</script>
+
+<script>
+    var myInput = document.getElementById("password");
+    var length = document.getElementById("length");
+
+    // When the user clicks on the password field, show the message box
+    myInput.onfocus = function() {
+        document.getElementById("message").style.display = "block";
+    }
+
+    // When the user clicks outside of the password field, hide the message box
+    myInput.onblur = function() {
+        document.getElementById("message").style.display = "none";
+    }
+
+    // When the user starts to type something inside the password field
+    myInput.onkeyup = function() {
+        // Validate length
+        if(myInput.value.length >= 8) {
+            length.classList.remove("invalid");
+            length.classList.add("valid");
+        } else {
+            length.classList.remove("valid");
+            length.classList.add("invalid");
+        }
+    }
+</script>
+
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

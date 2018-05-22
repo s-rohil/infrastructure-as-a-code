@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .btn {
+            background: #424242;
+            border-radius: 0;
+            color: #fff;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #1c1c1c;
+        }
+    </style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<div th:replace="fragments/header :: header"/>
+<body>
+<div th:replace="fragments/navigation :: navigation"/>
+<!-- Page Content -->
+<div class="container">
+    <p>
+        Login here!
+    </p>
+
+    <br/>
+    <form class="form-horizontal" id="loginform" enctype="application/json" action="/loginSuccess" method="post">
+        <div class="form-group">
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" placeholder="Email" name="email"></input>
+                <input type="password" class="form-control" id="pwd" placeholder="Password" name="password"></input>
+                <input type="submit" class="btn btn-block" value="Login"></input>
+            </div>
+        </div>
+    </form>
+<br/>
+    <a href="/resetPassword">Forgot Password?</a>
+</div>
+
+<script th:inline="javascript">
+    $("#loginform").submit(function (e) {
+        var object = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+        };
+        var json = JSON.stringify(object);
+        $.ajax({
+            url: '/loginUser',
+            type:'POST',
+            data:json,
+            dataType: 'json',
+            contentType: "application/json",
+            context: document.body,
+        })
+    })
+</script>
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

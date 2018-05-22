@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments/header :: header"/>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .btn-search {
+            background: #424242;
+            border-radius: 0;
+            color: #fff;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #1c1c1c;
+        }
+        .btn-search:link, .btn-search:visited {
+            color: #fff;
+        }
+        .btn-search:active, .btn-search:hover {
+            background: #1c1c1c;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navigation :: navigation"/>
+
+
+<!-- Page Content -->
+<div class="container">
+    <p>
+        Welcome to CSYE 6225 Spring 2018 Semester!!!
+    </p>
+    <br></br>
+    <div class="input-group col-sm-10">
+        <form class="form-horizontal" id="searchform" enctype="application/json" action="/searchResults" method="post">
+            <input type="text" class="form-control" placeholder="Search by First Name or Last Name ...." id="search" name="search" required="true"></input>
+            <span class="input-group-btn">
+        <input type="submit" class="btn btn-search btn-block" value="Search"></input>
+            </span>
+        </form>
+    </div>
+<br/><br/>
+    <div id="myDiv">
+        <table class="table-hover col-sm-10 table-bordered">
+            <form action="/profile" method="post">
+            <thead>
+            <tr>
+                <th><h3>Search Results</h3></th>
+                <th><h3>Action</h3></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="searchResults" type="java"*/-->
+            <tr th:each="data, iterstat: ${searchResults}" id="body">
+                <td><input th:type="hidden" th:text="${data}" th:value="${data}" id="username" name="username"></input></td>
+                <td><input th:type="submit" class="btn btn-search btn-block" th:value="Go"></input></td>
+            </tr>
+            </tbody>
+            </form>
+        </table>
+    </div>
+</div>
+<!-- /.container -->
+<script th:inline="javascript">
+    $("#registerform").submit(function (e) {
+        var object = {
+            search: document.getElementById("search").value
+        };
+        var json = JSON.stringify(object);
+        $.ajax({
+            url: '/search',
+            type:'POST',
+            data:json,
+            dataType: 'json',
+            contentType: "application/json",
+            context: document.body,
+        })
+    })
+</script>
+<script>
+    var x = document.getElementById("myDiv");
+    var y = document.getElementById("body");
+        if (y != null) {
+            x.style.display = "block";
+        }else{
+            x.style.display = "none";
+    }
+</script>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
+

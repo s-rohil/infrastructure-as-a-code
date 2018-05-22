@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<div th:replace="fragments/header :: header"/>
+<body>
+<div th:replace="fragments/navigation :: navigation"/>
+
+
+<!-- Page Content -->
+<div class="container col-sm-10">
+    <!--/*@thymesVar id="firstname" type="java"*/-->
+    <!--/*@thymesVar id="lastname" type="java"*/-->
+    <!--/*@thymesVar id="fileUrl" type="java"*/-->
+
+    <div th:if="${session.fileUrl}">
+        <img id="local" th:src="@{http://localhost:8080/photo}" alt="Profile pic" width="200" height="200"/>
+        <img id="s3" th:src="${fileUrl}" alt="Profile pic" width="200" height="200"/>
+    </div>
+<br/>
+    <h1>
+        <span th:text="${session.firstname} + ' ' + ${session.lastname}"></span>
+    </h1>
+    <br/>
+    <h4>About</h4>
+    <br/>
+    <!--/*@thymesVar id="about" type="java"*/-->
+        <h5><span th:text="${session.about}"></span></h5>
+</div>
+<!-- /.container -->
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.querySelectorAll('img').forEach(function(img){
+            img.onerror = function(){this.style.display='none';};
+        })
+    });
+</script>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
